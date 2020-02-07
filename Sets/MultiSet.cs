@@ -13,9 +13,9 @@ namespace Sets
 
         public override void Add(int i)
         {
-            if (i < 1 || i > _max)
+            if (i < 1 || i > Max)
             {
-                throw new OutOfSetRangeException(i, _max);
+                throw new OutOfSetRangeException(i, Max);
             }
             _arr[i - 1]++;
         }
