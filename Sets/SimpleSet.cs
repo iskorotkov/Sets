@@ -1,4 +1,6 @@
-﻿namespace Sets
+﻿using System;
+
+namespace Sets
 {
     public class SimpleSet : Set
     {
@@ -20,25 +22,41 @@
 
         public override void Remove(int i)
         {
+            if (i < 1 || i > Max) return;
             _arr[i - 1] = false;
         }
 
-        public override bool Contains(int i) => _arr[i - 1];
+        public override bool Contains(int i) => i >= 1 && i <= Max && _arr[i - 1];
 
-        public static SimpleSet operator +(SimpleSet s1, SimpleSet s2)
+        public static SimpleSet operator +(SimpleSet lhs, SimpleSet rhs)
         {
-            return Union(s1, s2,
-                // ReSharper disable once ArgumentsStyleAnonymousFunction
-                applyUnion: (inSet1, inSet2, resultSet, i) => resultSet._arr[i] = inSet1._arr[i] || inSet2._arr[i],
-                // ReSharper disable once ArgumentsStyleAnonymousFunction
-                applyCopy: (biggerSet, resultSet, i) => resultSet._arr[i] = biggerSet._arr[i]);
+            var minLength = Math.Min(lhs.Max, rhs.Max);
+            var length = Math.Max(lhs.Max, rhs.Max);
+            var result = new SimpleSet(length);
+            for (var i = 0; i < minLength; i++)
+            {
+                result._arr[i] = lhs._arr[i] || rhs._arr[i];
+            }
+
+            var biggest = lhs.Max > rhs.Max ? lhs : rhs;
+            for (var i = minLength; i < length; i++)
+            {
+                result._arr[i] = biggest._arr[i];
+            }
+
+            return result;
         }
 
-        public static SimpleSet operator *(SimpleSet s1, SimpleSet s2)
+        public static SimpleSet operator *(SimpleSet lhs, SimpleSet rhs)
         {
-            return Intersect(s1, s2,
-                // ReSharper disable once ArgumentsStyleAnonymousFunction
-                applyIntersect: (inSet1, inSet2, resultSet, i) => resultSet._arr[i] = inSet1._arr[i] && inSet2._arr[i]);
+            var length = Math.Min(lhs.Max, rhs.Max);
+            var result = new SimpleSet(length);
+            for (var i = 0; i < length; i++)
+            {
+                result._arr[i] = lhs._arr[i] && rhs._arr[i];
+            }
+
+            return result;
         }
     }
 }

@@ -31,30 +31,47 @@ namespace Sets
 
         public override void Remove(int i)
         {
+            if (i < 1 || i > Max) return;
             var invertedMask = ~Bitmask(i);
             _arr[Elem(i)] &= invertedMask;
         }
 
         public override bool Contains(int i)
         {
+            if (i < 1 || i > Max) return false;
             var bitmask = _arr[Elem(i)] & Bitmask(i);
             return bitmask != 0;
         }
 
-        public static BitSet operator +(BitSet s1, BitSet s2)
+        public static BitSet operator +(BitSet lhs, BitSet rhs)
         {
-            return Union(s1, s2,
-                // ReSharper disable once ArgumentsStyleAnonymousFunction
-                applyUnion: (inSet1, inSet2, resultSet, i) => resultSet._arr[i] = inSet1._arr[i] | inSet2._arr[i],
-                // ReSharper disable once ArgumentsStyleAnonymousFunction
-                applyCopy: (biggerSet, resultSet, i) => resultSet._arr[i] = biggerSet._arr[i]);
+            var minLength = Math.Min(lhs.Max, rhs.Max);
+            var length = Math.Max(lhs.Max, rhs.Max);
+            var result = new BitSet(length);
+            for (var i = 0; i < minLength; i++)
+            {
+                result._arr[i] = lhs._arr[i] | rhs._arr[i];
+            }
+
+            var biggest = lhs.Max > rhs.Max ? lhs : rhs;
+            for (var i = minLength; i < length; i++)
+            {
+                result._arr[i] = biggest._arr[i];
+            }
+
+            return result;
         }
 
-        public static BitSet operator *(BitSet s1, BitSet s2)
+        public static BitSet operator *(BitSet lhs, BitSet rhs)
         {
-            return Intersect(s1, s2,
-                // ReSharper disable once ArgumentsStyleAnonymousFunction
-                applyIntersect: (inSet1, inSet2, resultSet, i) => resultSet._arr[i] = inSet1._arr[i] & inSet2._arr[i]);
+            var length = Math.Min(lhs.Max, rhs.Max);
+            var result = new BitSet(length);
+            for (var i = 0; i < length; i++)
+            {
+                result._arr[i] = lhs._arr[i] & rhs._arr[i];
+            }
+
+            return result;
         }
     }
 }

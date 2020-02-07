@@ -20,24 +20,43 @@ namespace Sets
             _arr[i - 1]++;
         }
 
-        public override bool Contains(int i) => _arr[i - 1] > 0;
+        public override bool Contains(int i) => i >= 1 && i <= Max && _arr[i - 1] > 0;
 
         public override void Remove(int i)
         {
+            if (i < 1 || i > Max) return;
             _arr[i - 1] = Math.Max(0, _arr[i - 1] - 1);
         }
 
-        public static MultiSet operator +(MultiSet s1, MultiSet s2)
+        public static MultiSet operator +(MultiSet lhs, MultiSet rhs)
         {
-            return Union(s1, s2,
-                applyUnion: (s1, s2, s3, i) => s3._arr[i] = s1._arr[i] + s2._arr[i],
-                applyCopy: (biggerSet, s3, i) => s3._arr[i] = biggerSet._arr[i]);
+            var minLength = Math.Min(lhs.Max, rhs.Max);
+            var length = Math.Max(lhs.Max, rhs.Max);
+            var result = new MultiSet(length);
+            for (var i = 0; i < minLength; i++)
+            {
+                result._arr[i] = lhs._arr[i] + rhs._arr[i];
+            }
+
+            var biggest = lhs.Max > rhs.Max ? lhs : rhs;
+            for (var i = minLength; i < length; i++)
+            {
+                result._arr[i] = biggest._arr[i];
+            }
+
+            return result;
         }
 
-        public static MultiSet operator *(MultiSet s1, MultiSet s2)
+        public static MultiSet operator *(MultiSet lhs, MultiSet rhs)
         {
-            return Intersect(s1, s2,
-                applyIntersect: (s1, s2, s3, i) => s3._arr[i] = Math.Min(s1._arr[i], s2._arr[2]));
+            var length = Math.Min(lhs.Max, rhs.Max);
+            var result = new MultiSet(length);
+            for (var i = 0; i < length; i++)
+            {
+                result._arr[i] = Math.Max(lhs._arr[i], rhs._arr[i]);
+            }
+
+            return result;
         }
     }
 }
