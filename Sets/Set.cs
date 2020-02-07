@@ -64,14 +64,16 @@ namespace Sets
         {
             var builder = new StringBuilder();
             builder.Append("Set: [");
+            var elemAdded = false;
             for (var i = 1; i <= Max; ++i)
             {
                 if (!Contains(i)) continue;
-                builder.Append(i);
-                if (i != Max)
+                if (elemAdded)
                 {
                     builder.Append(", ");
                 }
+                builder.Append(i);
+                elemAdded = true;
             }
 
             builder.Append("]");
