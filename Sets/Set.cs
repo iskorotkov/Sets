@@ -6,36 +6,33 @@ namespace Sets
 {
     public abstract class Set
     {
-        protected static T Union<T>(T s1, T s2, Action<T, T, T, int> applyUnion, Action<T, T, int> applyCopy)
-            where T : Set
+        public static Set operator +(Set lhs, Set rhs)
         {
-            var minLength = Math.Min(s1.Max, s2.Max);
-            var maxLength = Math.Max(s1.Max, s2.Max);
-            var s3 = (T) Activator.CreateInstance(typeof(T), maxLength);
-            for (var i = 0; i < minLength; i++)
+            var length = Math.Max(lhs.Max, rhs.Max);
+            var result = (Set) Activator.CreateInstance(lhs.GetType(), length);
+            for (var i = 1; i <= length; i++)
             {
-                applyUnion(s1, s2, s3, i);
+                if (lhs.Contains(i) || rhs.Contains(i))
+                {
+                    result.Add(i);
+                }
             }
-
-            var biggerSet = s1.Max > s2.Max ? s1 : s2;
-            for (var i = minLength; i < maxLength; i++)
-            {
-                applyCopy(biggerSet, s3, i);
-            }
-
-            return s3;
+            return result;
         }
 
-        protected static T Intersect<T>(T s1, T s2, Action<T, T, T, int> applyIntersect) where T : Set
+        public static Set operator *(Set lhs, Set rhs)
         {
-            var minLength = Math.Min(s1.Max, s2.Max);
-            var s3 = (T) Activator.CreateInstance(typeof(T), minLength);
-            for (var i = 0; i < minLength; i++)
+            var length = Math.Min(lhs.Max, rhs.Max);
+            var result = (Set) Activator.CreateInstance(lhs.GetType(), length);
+            for (var i = 1; i <= length; i++)
             {
-                applyIntersect(s1, s2, s3, i);
+                if (lhs.Contains(i) && rhs.Contains(i))
+                {
+                    result.Add(i);
+                }
             }
 
-            return s3;
+            return result;
         }
 
         public abstract void Add(int i);
@@ -72,6 +69,7 @@ namespace Sets
                 {
                     builder.Append(", ");
                 }
+
                 builder.Append(i);
                 elemAdded = true;
             }
