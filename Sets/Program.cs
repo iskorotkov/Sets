@@ -21,6 +21,8 @@ namespace Sets
             s3.Remove(1);
             s3.Remove(9);
             Console.WriteLine(s3);
+
+            s.Add(101);
         }
     }
 }

@@ -14,6 +14,10 @@ namespace Sets
 
         public override void Add(int i)
         {
+            if (i < 1 || i > _max)
+            {
+                throw new OutOfSetRangeException(i, _max);
+            }
             _arr[Elem(i)] |= Bitmask(i);
         }
 
