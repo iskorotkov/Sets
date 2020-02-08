@@ -20,6 +20,38 @@ namespace Sets.UWP
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             _set = (Set) e.Parameter;
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            SetOutputBlock.Text = _set.ToString();
+            ValueBox.Text = string.Empty;
+        }
+
+        private void BackButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Frame.GoBack();
+        }
+
+        private int GetProcessedNumber() => int.Parse(ValueBox.Text.Trim());
+
+        private void AddButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            _set.Add(GetProcessedNumber());
+            Refresh();
+        }
+
+        private void RemoveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            _set.Remove(GetProcessedNumber());
+            Refresh();
+        }
+
+        private void ContainsButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            var number = GetProcessedNumber();
+            ContainsFlyoutBlock.Text = _set.Contains(number) ? $"Set contains {number}" : $"Set does not contain {number}";
         }
     }
 }
