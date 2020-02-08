@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Sets
@@ -14,34 +15,54 @@ namespace Sets
         private Set _set1;
         private Set _set2;
 
-        public CLI()
+        public CLI() => _commands = new Dictionary<string, Operation>
         {
-            _commands = new Dictionary<string, Operation>
+            {"exit", new Operation("stop execution and exit", Context.All, OnExit)},
+            {"single", new Operation("start test with single set", Context.NoTest, OnSingleSetTest)},
+            {"two", new Operation("start test with two sets", Context.NoTest, OnTwoSetsTest)},
+            {"union", new Operation("print union of two sets", Context.TwoSetsTest, OnUnion)},
+            {"intersect", new Operation("print intersection of two sets", Context.TwoSetsTest, OnIntersect)},
+            {"add", new Operation("add <val>: add value to set", Context.SingleSetTest, OnAdd)},
+            {"remove", new Operation("remove <val>: remove value from set", Context.SingleSetTest, OnRemove)},
             {
-                {"exit", new Operation("stop execution and exit", Context.All, OnExit)},
-                {"single", new Operation("start test with single set", Context.NoTest, OnSingleSetTest)},
-                {"two", new Operation("start test with two sets", Context.NoTest, OnTwoSetsTest)},
-                {"union", new Operation("print union of two sets", Context.TwoSetsTest, OnUnion)},
-                {"intersect", new Operation("print intersection of two sets", Context.TwoSetsTest, OnIntersect)},
-                {"add", new Operation("add <val>: add value to set", Context.SingleSetTest, OnAdd)},
-                {"remove", new Operation("remove <val>: remove value from set", Context.SingleSetTest, OnRemove)},
-                {
-                    "contains",
-                    new Operation("contains <val>: check whether value is present in set", Context.SingleSetTest,
-                        OnContains)
-                },
-                {"show", new Operation("print set contents", Context.SingleSetTest, OnShow)},
-                {"help", new Operation("print info about all available commands", Context.All, OnHelp)},
-                {"finish", new Operation("finish current test", Context.AnyTest, OnFinish)},
-                {"logical", new Operation("use logical set representation", Context.SetTypeSelection)},
-                {"bit", new Operation("use bit set representation", Context.SetTypeSelection)}
-            };
+                "contains", new Operation("contains <val>: check whether value is present in set",
+                    Context.SingleSetTest,
+                    OnContains)
+            },
+            {"show", new Operation("print set contents", Context.SingleSetTest, OnShow)},
+            {"help", new Operation("print info about all available commands", Context.All, OnHelp)},
+            {"finish", new Operation("finish current test", Context.AnyTest, OnFinish)},
+            {"logical", new Operation("use logical set representation", Context.SetTypeSelection)},
+            {"bit", new Operation("use bit set representation", Context.SetTypeSelection)},
+            {"file", new Operation("file <path>: read set content from file", Context.SetReading)},
+            {
+                "console",
+                new Operation("console <val1> <val2> <valN>: read set content from console", Context.SetReading)
+            }
+        };
+
+        private void ReadSetContent(Set set)
+        {
+            Console.Write("Select origin of set content: ");
+
+            var command = WaitForCommand(Context.SetReading);
+            switch (command.Name)
+            {
+                case "file":
+                    using (var reader = new StreamReader(command.Args))
+                    {
+                        var nums = reader.ReadToEnd().Split('\n').Select(int.Parse);
+                        set.Append(nums.ToArray());
+                    }
+
+                    break;
+                case "console":
+                    set.Append(command.Args);
+                    break;
+            }
         }
 
-        private void OnFinish(string[] obj)
-        {
-            _currentState = State.Finishing;
-        }
+        private void OnFinish(string args) => _currentState = State.Finishing;
 
         public void ProcessInput()
         {
@@ -50,23 +71,23 @@ namespace Sets
             ExecuteEventLoop(Context.NoTest, State.Exiting);
         }
 
-        private void OnError(Exception e, bool detailed = false)
-        {
+        private void OnError(Exception e, bool detailed = false) =>
             Console.WriteLine(detailed ? e.ToString() : e.Message);
-        }
 
-        private void OnExit(string[] args)
+        private void OnExit(string args)
         {
             _currentState = State.Exiting;
             Console.WriteLine("Thank you and good luck!");
         }
 
-        private void OnSingleSetTest(string[] args)
+        private void OnSingleSetTest(string args)
         {
             _currentContext = Context.SingleSetTest;
 
             var length = ReadNumber();
             _set1 = SelectRepresentation(length);
+            ReadSetContent(_set1);
+
             ExecuteEventLoop(Context.SingleSetTest, State.Finishing);
 
             _currentContext = Context.NoTest;
@@ -86,6 +107,7 @@ namespace Sets
             Console.Write("Enter representation of the set: ");
 
             var command = WaitForCommand(Context.SetTypeSelection);
+            // TODO: Handle help/finish/exit commands
             return command.Name switch
             {
                 "logical" => new SimpleSet(length),
@@ -109,52 +131,48 @@ namespace Sets
             return length;
         }
 
-        private void OnTwoSetsTest(string[] args)
+        private void OnTwoSetsTest(string args)
         {
             _currentContext = Context.TwoSetsTest;
 
             Console.WriteLine("Set #1:");
             var len1 = ReadNumber();
             _set1 = SelectRepresentation(len1);
+            ReadSetContent(_set1);
 
             Console.WriteLine("Set #2:");
             var len2 = ReadNumber();
             _set2 = SelectRepresentation(len2);
+            ReadSetContent(_set2);
 
             ExecuteEventLoop(Context.TwoSetsTest, State.Finishing);
 
             _currentContext = Context.NoTest;
         }
 
-        private void OnUnion(string[] args)
-        {
-            Console.WriteLine(_set1 + _set2);
-        }
+        private void OnUnion(string args) => Console.WriteLine(_set1 + _set2);
 
-        private void OnIntersect(string[] args)
-        {
-            Console.WriteLine(_set1 * _set2);
-        }
+        private void OnIntersect(string args) => Console.WriteLine(_set1 * _set2);
 
-        private void OnAdd(string[] args)
+        private void OnAdd(string args)
         {
-            var num = int.Parse(args[1]);
+            var num = int.Parse(args);
             _set1.Add(num);
         }
 
-        private void OnRemove(string[] args)
+        private void OnRemove(string args)
         {
-            var num = int.Parse(args[1]);
+            var num = int.Parse(args);
             _set1.Remove(num);
         }
 
-        private void OnContains(string[] args)
+        private void OnContains(string args)
         {
-            var num = int.Parse(args[1]);
+            var num = int.Parse(args);
             Console.WriteLine(_set1.Contains(num));
         }
 
-        private void OnShow(string[] args)
+        private void OnShow(string args)
         {
             switch (_currentContext)
             {
@@ -176,7 +194,7 @@ namespace Sets
             Console.WriteLine("Select test that you want to perform and execute commands.");
         }
 
-        private void OnHelp(string[] args)
+        private void OnHelp(string args)
         {
             Console.WriteLine("\n==========================================================");
             Console.WriteLine("List of available commands:");
@@ -192,14 +210,14 @@ namespace Sets
 
         private UserCommand WaitForCommand(Context allowed)
         {
-            var lines = Console.ReadLine().Split(' ');
+            var lines = Console.ReadLine().Split(' ', 2);
 
             // TODO: Throws InvalidOperationException with an unreadable message?
             var (name, command) = _commands.First(com =>
                 string.Equals(com.Key, lines[0], StringComparison.InvariantCultureIgnoreCase));
             if (command.Supports(allowed))
             {
-                return new UserCommand(name, command, lines);
+                return new UserCommand(name, command, lines.Length > 1 ? lines[1] : null);
             }
 
             throw new InvalidOperationException("You can't use this operation right now.");
@@ -208,10 +226,10 @@ namespace Sets
         private struct Operation
         {
             public readonly string Description;
-            public readonly Action<string[]> Execute;
+            public readonly Action<string> Execute;
             private readonly Context _supportedContexts;
 
-            public Operation(string description, Context supportedContexts, Action<string[]> execute = null)
+            public Operation(string description, Context supportedContexts, Action<string> execute = null)
             {
                 Description = description;
                 Execute = execute;
@@ -225,9 +243,9 @@ namespace Sets
         {
             public readonly string Name;
             public readonly Operation Operation;
-            public readonly string[] Args;
+            public readonly string Args;
 
-            public UserCommand(string name, Operation operation, string[] args)
+            public UserCommand(string name, Operation operation, string args)
             {
                 Name = name;
                 Operation = operation;
@@ -250,6 +268,7 @@ namespace Sets
             SingleSetTest = 2,
             TwoSetsTest = 4,
             SetTypeSelection = 8,
+            SetReading = 16,
             AnyTest = SingleSetTest | TwoSetsTest,
             All = ~0,
         }
