@@ -40,7 +40,7 @@ namespace Sets
         private void ReadSetContent(Set set)
         {
             Console.Write("Enter set contents (either a sequence of numbers separated by whitespace," +
-            " or a valid path to file in quotes): ");
+                          " or a valid path to file in quotes): ");
 
             var input = Console.ReadLine().Trim();
             var match = Regex.Match(input, "^['\"](.+)['\"]$");
@@ -67,7 +67,7 @@ namespace Sets
             ExecuteEventLoop(Context.NoTest, State.Exiting);
         }
 
-        private void OnError(Exception e, bool detailed = false) =>
+        private void Error(Exception e, bool detailed = false) =>
             Console.WriteLine(detailed ? e.ToString() : e.Message);
 
         private void OnExit(string args)
@@ -117,10 +117,14 @@ namespace Sets
             Console.Write("Enter length of the set: ");
 
             var length = 0;
-            var success = false;
-            while (!success && !_currentState.HasFlag(State.Finishing))
+            while (!_currentState.HasFlag(State.Finishing))
             {
-                success = int.TryParse(Console.ReadLine(), out length);
+                if (int.TryParse(Console.ReadLine(), out length))
+                {
+                    break;
+                }
+
+                Console.Write("Please enter length of the set: ");
             }
 
             return length;
@@ -151,27 +155,45 @@ namespace Sets
 
         private void OnAdd(string args)
         {
-            var num = int.Parse(args);
             try
             {
+                var num = int.Parse(args);
                 _set1.Add(num);
             }
             catch (OutOfSetRangeException e)
             {
-                OnError(e);
+                Error(e);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Value for add operation wasn't provided or was invalid.");
             }
         }
 
         private void OnRemove(string args)
         {
-            var num = int.Parse(args);
-            _set1.Remove(num);
+            try
+            {
+                var num = int.Parse(args);
+                _set1.Remove(num);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Value for remove operation wasn't provided or was invalid.");
+            }
         }
 
         private void OnContains(string args)
         {
-            var num = int.Parse(args);
-            Console.WriteLine(_set1.Contains(num));
+            try
+            {
+                var num = int.Parse(args);
+                Console.WriteLine(_set1.Contains(num));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Value for contains operation wasn't provided or was invalid.");
+            }
         }
 
         private void OnShow(string args)
@@ -212,19 +234,30 @@ namespace Sets
 
         private UserCommand WaitForCommand(Context allowed)
         {
-            var lines = Console.ReadLine()
-                .RemoveInsignificantWhitespaces(2)
-                .ToArray();
-
-            // TODO: Throws InvalidOperationException with an unreadable message?
-            var (name, command) = _commands.First(com =>
-                string.Equals(com.Key, lines[0], StringComparison.InvariantCultureIgnoreCase));
-            if (command.Supports(allowed))
+            while (true)
             {
-                return new UserCommand(name, command, lines.Length > 1 ? lines[1] : null);
-            }
+                var lines = Console.ReadLine()
+                    .RemoveInsignificantWhitespaces(2)
+                    .ToArray();
 
-            throw new InvalidOperationException("You can't use this operation right now.");
+                try
+                {
+                    var (name, command) = _commands
+                        .FirstOrDefault(com =>
+                            string.Equals(com.Key, lines[0],
+                                StringComparison.InvariantCultureIgnoreCase));
+                    if (command.Supports(allowed))
+                    {
+                        return new UserCommand(name, command, lines.Length > 1 ? lines[1] : null);
+                    }
+
+                    Console.WriteLine("You can't use this operation right now.");
+                }
+                catch (InvalidOperationException e)
+                {
+                    Error(e);
+                }
+            }
         }
 
         private struct Operation
