@@ -43,10 +43,13 @@ namespace Sets
             " or a valid path to file in quotes): ");
 
             var input = Console.ReadLine().Trim();
-            if (Regex.IsMatch(input, "^['\"].+['\"]$"))
+            var match = Regex.Match(input, "^['\"](.+)['\"]$");
+            if (match.Success)
             {
-                using var reader = new StreamReader(input);
-                var nums = reader.ReadToEnd().Split('\n').Select(int.Parse);
+                var filename = match.Groups[1].Value;
+                using var reader = new StreamReader(filename);
+                var content = reader.ReadToEnd().RemoveInsignificantWhitespaces();
+                var nums = content.Select(int.Parse);
                 set.Append(nums.ToArray());
             }
             else
