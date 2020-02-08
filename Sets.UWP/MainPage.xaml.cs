@@ -13,26 +13,30 @@ namespace Sets.UWP
         public MainPage()
         {
             InitializeComponent();
-            var test1Item = new ListViewItem
-            {
-                Content = "Test 1",
-                Tag = new Action(() => MainFrame.Navigate(typeof(TestOneSetupPage)))
-            };
-            var test2Item = new ListViewItem
-            {
-                Content = "Test 2",
-                Tag = new Action(() => MainFrame.Navigate(typeof(TestTwoSetupPage)))
-            };
-            MainLv.Items.Add(test1Item);
-            MainLv.Items.Add(test2Item);
+
+            MainLv.Items.Add(new Test("Test 1", () => MainFrame.Navigate(typeof(TestOneSetupPage))));
+            MainLv.Items.Add(new Test("Test 2", () => MainFrame.Navigate(typeof(TestTwoSetupPage))));
             MainLv.SelectedIndex = 0;
         }
 
         private void MainLv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = (ListViewItem) MainLv.SelectedItem;
-            var action = (Action) item.Tag;
-            action();
+            var item = (Test) MainLv.SelectedItem;
+            item.Execute();
+        }
+
+        private class Test
+        {
+            private readonly string _text;
+            public Action Execute { get; }
+
+            public Test(string text, Action execute)
+            {
+                _text = text;
+                Execute = execute;
+            }
+
+            public override string ToString() => _text;
         }
     }
 }

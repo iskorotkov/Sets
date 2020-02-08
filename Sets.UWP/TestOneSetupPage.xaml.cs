@@ -84,30 +84,30 @@ namespace Sets.UWP
         {
             public ReadingMethod(string text, Action<Set> execute, Action onSelected)
             {
-                Text = text;
+                _text = text;
                 Execute = execute;
                 OnSelected = onSelected;
             }
 
-            public string Text { get; }
+            private readonly string _text;
             public Action<Set> Execute { get; }
             public Action OnSelected { get; }
 
-            public override string ToString() => Text;
+            public override string ToString() => _text;
         }
 
         private class CreationMethod
         {
             public CreationMethod(string text, Func<int, Set> execute)
             {
-                Text = text;
+                _text = text;
                 Execute = execute;
             }
 
-            public string Text { get; }
+            private readonly string _text;
             public Func<int, Set> Execute { get; }
 
-            public override string ToString() => Text;
+            public override string ToString() => _text;
         }
     }
 }
