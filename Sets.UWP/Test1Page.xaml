@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="Sets.UWP.Test1Page"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Sets.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="16,16,16,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="TextBlock" TextWrapping="Wrap" Text="Set representation"/>
+                <ComboBox x:Name="RepresentationCb" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="0">
+                    <ComboBoxItem x:Name="LogicalCbi" Content="Logical"/>
+                    <ComboBoxItem x:Name="BitCbi" Content="Bit"/>
+                    <ComboBoxItem x:Name="MultiCbi" Content="Multiset"/>
+                </ComboBox>
+                <TextBlock x:Name="TextBlock1" Text="Source" TextWrapping="Wrap" Grid.Row="1"/>
+                <ComboBox x:Name="SourceCb" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="0">
+                    <ComboBoxItem x:Name="ConsoleCbi" Content="Console"/>
+                    <ComboBoxItem x:Name="FileCbi" Content="File"/>
+                </ComboBox>
+            </Grid>
+            <Button x:Name="CreateSetBtn" Content="Create set" HorizontalAlignment="Center" Click="createSetBtn_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
