@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
+using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -6,6 +9,8 @@ namespace Sets.UWP
 {
     public sealed partial class TestOneSetupPage : Page
     {
+        private string _selectedFile;
+
         public TestOneSetupPage()
         {
             InitializeComponent();
@@ -66,12 +71,30 @@ namespace Sets.UWP
             SetContentTb.Visibility = Visibility.Visible;
         }
 
-        private static void ReadFromBox(Set set)
+        private void ReadFromBox(Set set)
         {
+            try
+            {
+                set.Append(SetContentTb.Text);
+            }
+            catch (Exception e)
+            {
+                // TODO: Handle exception
+            }
         }
 
-        private static void ReadFromFile(Set set)
+        private void ReadFromFile(Set set)
         {
+            // TODO: Handle file not selected
+            using (var reader = new StreamReader(_selectedFile))
+            {
+                var content = reader.ReadToEnd();
+                var numbers = content.Trim()
+                    .Split(' ', '\t', '\n', '\r')
+                    .Where(s => s.Any())
+                    .Select(int.Parse);
+                set.Append(numbers.ToArray());
+            }
         }
 
         private void SourceCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -108,6 +131,23 @@ namespace Sets.UWP
             public Func<int, Set> Execute { get; }
 
             public override string ToString() => _text;
+        }
+
+        private async void FilePickerButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var picker = new FileOpenPicker();
+            picker.FileTypeFilter.Add(".txt");
+
+            var file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                _selectedFile = file.Path;
+                FilePickerStatus.Text = $"File selected: {file.Name}";
+            }
+            else
+            {
+                FilePickerStatus.Text = "File wasn't selected";
+            }
         }
     }
 }

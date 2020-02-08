@@ -40,7 +40,7 @@
             </Grid>
             <TextBox x:Name="SetContentTb" Text="" TextWrapping="Wrap" Visibility="Visible" PlaceholderText="Enter values here"/>
             <StackPanel x:Name="FilePickerPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button x:Name="FilePickerButton" Content="Pick file"/>
+                <Button x:Name="FilePickerButton" Content="Pick file" Click="FilePickerButton_OnClick"/>
                 <TextBlock x:Name="FilePickerStatus" Text="File wasn't selected" TextWrapping="Wrap"/>
             </StackPanel>
             <Button x:Name="CreateSetBtn" Content="Create set" HorizontalAlignment="Center" Click="createSetBtn_Click"/>
