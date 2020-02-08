@@ -41,8 +41,7 @@ namespace Sets
         {
             Console.Write("Enter set contents (either a sequence of numbers or valid path to file): ");
 
-            var input = Console.ReadLine();
-            input = input.Trim();
+            var input = Console.ReadLine().Trim();
             if (Regex.IsMatch(input, "^['\"].+['\"]$"))
             {
                 using var reader = new StreamReader(input);
@@ -59,7 +58,7 @@ namespace Sets
 
         public void ProcessInput()
         {
-            OnWelcome();
+            Welcome();
             OnHelp(null);
             ExecuteEventLoop(Context.NoTest, State.Exiting);
         }
@@ -77,7 +76,7 @@ namespace Sets
         {
             _currentContext = Context.SingleSetTest;
 
-            var length = ReadNumber();
+            var length = ReadSetLength();
             _set1 = SelectRepresentation(length);
             ReadSetContent(_set1);
 
@@ -105,12 +104,11 @@ namespace Sets
             {
                 "logical" => new SimpleSet(length),
                 "bit" => new BitSet(length),
-                // TODO: Crashes
                 _ => throw new ArgumentException("Can't create set representation.")
             };
         }
 
-        private int ReadNumber()
+        private int ReadSetLength()
         {
             Console.Write("Enter length of the set: ");
 
@@ -129,12 +127,12 @@ namespace Sets
             _currentContext = Context.TwoSetsTest;
 
             Console.WriteLine("Set #1:");
-            var len1 = ReadNumber();
+            var len1 = ReadSetLength();
             _set1 = SelectRepresentation(len1);
             ReadSetContent(_set1);
 
             Console.WriteLine("\nSet #2:");
-            var len2 = ReadNumber();
+            var len2 = ReadSetLength();
             _set2 = SelectRepresentation(len2);
             ReadSetContent(_set2);
 
@@ -187,7 +185,7 @@ namespace Sets
             }
         }
 
-        private void OnWelcome()
+        private void Welcome()
         {
             Console.WriteLine("\n==========================================================\n");
             Console.WriteLine("Welcome to Sets!");
@@ -210,7 +208,9 @@ namespace Sets
 
         private UserCommand WaitForCommand(Context allowed)
         {
-            var lines = Console.ReadLine().Split(' ', 2);
+            var lines = Console.ReadLine()
+                .RemoveInsignificantWhitespaces(2)
+                .ToArray();
 
             // TODO: Throws InvalidOperationException with an unreadable message?
             var (name, command) = _commands.First(com =>

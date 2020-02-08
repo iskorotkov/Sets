@@ -17,6 +17,7 @@ namespace Sets
                     result.Add(i);
                 }
             }
+
             return result;
         }
 
@@ -48,7 +49,9 @@ namespace Sets
 
         public void Append(string s)
         {
-            var nums = s.Split(' ').Select(int.Parse).ToArray();
+            var nums = s.RemoveInsignificantWhitespaces()
+                .Select(int.Parse)
+                .ToArray();
             Append(nums);
         }
 
