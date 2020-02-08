@@ -30,7 +30,7 @@ namespace Sets
                     Context.SingleSetTest,
                     OnContains)
             },
-            {"show", new Operation("print set contents", Context.SingleSetTest, OnShow)},
+            {"show", new Operation("print set contents", Context.AnyTest, OnShow)},
             {"help", new Operation("print info about all available commands", Context.All, OnHelp)},
             {"finish", new Operation("finish current test", Context.AnyTest, OnFinish)},
             {"logical", new Operation("use logical set representation", Context.SetTypeSelection)},
