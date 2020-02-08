@@ -50,7 +50,8 @@ namespace Sets.UWP
             var set = setCreator.Execute(max);
             method.Execute(set);
 
-            //Frame.Navigate(typeof(Test1Actions), set);
+            // TODO: Open actions page in App's frame
+            Frame.Navigate(typeof(TestOneActionsPage), set);
         }
 
         private static SimpleSet CreateLogicalSet(int max) => new SimpleSet(max);

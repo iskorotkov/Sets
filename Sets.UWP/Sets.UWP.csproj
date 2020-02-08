@@ -123,6 +123,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestOneActionsPage.xaml.cs">
+      <DependentUpon>TestOneActionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TestOneSetupPage.xaml.cs">
       <DependentUpon>TestOneSetupPage.xaml</DependentUpon>
     </Compile>
@@ -153,6 +156,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TestOneActionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TestOneSetupPage.xaml">
       <SubType>Designer</SubType>
