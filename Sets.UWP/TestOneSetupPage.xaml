@@ -12,38 +12,29 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="44" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" Grid.RowSpan="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="16,16,16,16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <TextBlock x:Name="SetReprTb" TextWrapping="Wrap" Text="Set representation"/>
-                <ComboBox x:Name="RepresentationCb" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                </ComboBox>
-                <TextBlock x:Name="SourceTb" Text="Source" TextWrapping="Wrap" Grid.Row="1"/>
-                <ComboBox x:Name="SourceCb" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="SourceCb_SelectionChanged">
-                </ComboBox>
-                <TextBlock x:Name="MaxTb" Text="Max value" TextWrapping="Wrap" Grid.Row="2"/>
-                <Slider x:Name="MaxElemSlider" Grid.Row="2" Grid.Column="1" Width="Auto" Maximum="1000" Minimum="1" Value="20"/>
-            </Grid>
-            <TextBox x:Name="SetContentTb" Text="" TextWrapping="Wrap" Visibility="Visible" PlaceholderText="Enter values here"/>
-            <StackPanel x:Name="FilePickerPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button x:Name="FilePickerButton" Content="Pick file" Click="FilePickerButton_OnClick"/>
-                <TextBlock x:Name="FilePickerStatus" Text="File wasn't selected" TextWrapping="Wrap"/>
-            </StackPanel>
-            <Button x:Name="CreateSetBtn" Content="Create set" HorizontalAlignment="Center" Click="createSetBtn_Click"/>
+        <TextBlock x:Name="SetReprTb" TextWrapping="Wrap" Text="Set representation" Grid.Row="1" Margin="8,8,8,8" Grid.Column="1" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <ComboBox x:Name="RepresentationCb" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Margin="8,8,8,8"/>
+        <TextBlock x:Name="SourceTb" Text="Source" TextWrapping="Wrap" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <ComboBox x:Name="SourceCb" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="SourceCb_SelectionChanged" Grid.Row="2" Margin="8,8,8,8"/>
+        <TextBlock x:Name="MaxTb" Text="Max value" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1" Margin="8,8,8,8" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Slider x:Name="MaxElemSlider" Grid.Row="3" Grid.Column="2" Width="Auto" Maximum="1000" Minimum="1" Value="20" Margin="8,8,8,8"/>
+        <TextBox x:Name="SetContentTb" Text="" TextWrapping="Wrap" Visibility="Visible" PlaceholderText="Enter values here" Grid.ColumnSpan="2" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" MinWidth="300" d:IsHidden="True" Margin="8,8,8,8"/>
+        <StackPanel x:Name="FilePickerPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Margin="8,8,8,8">
+            <Button x:Name="FilePickerButton" Content="Pick file" Click="FilePickerButton_OnClick" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="FilePickerStatus" Text="File wasn't selected" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0,0,0"/>
         </StackPanel>
+        <Button x:Name="CreateSetBtn" Content="Create set" Click="createSetBtn_Click" Grid.Column="1" Grid.Row="5" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="8,8,8,8"/>
     </Grid>
 </Page>
