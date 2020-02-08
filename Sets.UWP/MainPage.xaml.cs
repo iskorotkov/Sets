@@ -16,12 +16,12 @@ namespace Sets.UWP
             var test1Item = new ListViewItem
             {
                 Content = "Test 1",
-                Tag = new Action(() => MainFrame.Navigate(typeof(Test1Page)))
+                Tag = new Action(() => MainFrame.Navigate(typeof(TestOneSetupPage)))
             };
             var test2Item = new ListViewItem
             {
                 Content = "Test 2",
-                Tag = new Action(() => MainFrame.Navigate(typeof(Test2Page)))
+                Tag = new Action(() => MainFrame.Navigate(typeof(TestTwoSetupPage)))
             };
             MainLv.Items.Add(test1Item);
             MainLv.Items.Add(test2Item);

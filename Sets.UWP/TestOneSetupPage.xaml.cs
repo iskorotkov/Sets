@@ -4,9 +4,9 @@ using Windows.UI.Xaml.Controls;
 
 namespace Sets.UWP
 {
-    public sealed partial class Test1Page : Page
+    public sealed partial class TestOneSetupPage : Page
     {
-        public Test1Page()
+        public TestOneSetupPage()
         {
             InitializeComponent();
             CollapseInputMethods();
