@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Sets
 {
@@ -34,31 +35,23 @@ namespace Sets
             {"finish", new Operation("finish current test", Context.AnyTest, OnFinish)},
             {"logical", new Operation("use logical set representation", Context.SetTypeSelection)},
             {"bit", new Operation("use bit set representation", Context.SetTypeSelection)},
-            {"file", new Operation("file <path>: read set content from file", Context.SetReading)},
-            {
-                "console",
-                new Operation("console <val1> <val2> <valN>: read set content from console", Context.SetReading)
-            }
         };
 
         private void ReadSetContent(Set set)
         {
-            Console.Write("Select origin of set content: ");
+            Console.Write("Enter set contents (either a sequence of numbers or valid path to file): ");
 
-            var command = WaitForCommand(Context.SetReading);
-            switch (command.Name)
+            var input = Console.ReadLine();
+            input = input.Trim();
+            if (Regex.IsMatch(input, "^['\"].+['\"]$"))
             {
-                case "file":
-                    using (var reader = new StreamReader(command.Args))
-                    {
-                        var nums = reader.ReadToEnd().Split('\n').Select(int.Parse);
-                        set.Append(nums.ToArray());
-                    }
-
-                    break;
-                case "console":
-                    set.Append(command.Args);
-                    break;
+                using var reader = new StreamReader(input);
+                var nums = reader.ReadToEnd().Split('\n').Select(int.Parse);
+                set.Append(nums.ToArray());
+            }
+            else
+            {
+                set.Append(input);
             }
         }
 
@@ -140,7 +133,7 @@ namespace Sets
             _set1 = SelectRepresentation(len1);
             ReadSetContent(_set1);
 
-            Console.WriteLine("Set #2:");
+            Console.WriteLine("\nSet #2:");
             var len2 = ReadNumber();
             _set2 = SelectRepresentation(len2);
             ReadSetContent(_set2);
@@ -268,7 +261,6 @@ namespace Sets
             SingleSetTest = 2,
             TwoSetsTest = 4,
             SetTypeSelection = 8,
-            SetReading = 16,
             AnyTest = SingleSetTest | TwoSetsTest,
             All = ~0,
         }
