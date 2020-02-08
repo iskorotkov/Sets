@@ -150,7 +150,14 @@ namespace Sets
         private void OnAdd(string args)
         {
             var num = int.Parse(args);
-            _set1.Add(num);
+            try
+            {
+                _set1.Add(num);
+            }
+            catch (OutOfSetRangeException e)
+            {
+                OnError(e);
+            }
         }
 
         private void OnRemove(string args)
