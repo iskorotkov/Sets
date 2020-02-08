@@ -11,7 +11,7 @@ namespace Sets.UWP
     {
         public Test2Page()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

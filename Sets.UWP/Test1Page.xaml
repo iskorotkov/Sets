@@ -26,20 +26,23 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBlock x:Name="TextBlock" TextWrapping="Wrap" Text="Set representation"/>
-                <ComboBox x:Name="RepresentationCb" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="0">
-                    <ComboBoxItem x:Name="LogicalCbi" Content="Logical"/>
-                    <ComboBoxItem x:Name="BitCbi" Content="Bit"/>
-                    <ComboBoxItem x:Name="MultiCbi" Content="Multiset"/>
+                <TextBlock x:Name="SetReprTb" TextWrapping="Wrap" Text="Set representation"/>
+                <ComboBox x:Name="RepresentationCb" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 </ComboBox>
-                <TextBlock x:Name="TextBlock1" Text="Source" TextWrapping="Wrap" Grid.Row="1"/>
-                <ComboBox x:Name="SourceCb" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedIndex="0">
-                    <ComboBoxItem x:Name="ConsoleCbi" Content="Console"/>
-                    <ComboBoxItem x:Name="FileCbi" Content="File"/>
+                <TextBlock x:Name="SourceTb" Text="Source" TextWrapping="Wrap" Grid.Row="1"/>
+                <ComboBox x:Name="SourceCb" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="SourceCb_SelectionChanged">
                 </ComboBox>
+                <TextBlock x:Name="MaxTb" Text="Max value" TextWrapping="Wrap" Grid.Row="2"/>
+                <Slider x:Name="MaxElemSlider" Grid.Row="2" Grid.Column="1" Width="Auto" Maximum="1000" Minimum="1" Value="20"/>
             </Grid>
+            <TextBox x:Name="SetContentTb" Text="" TextWrapping="Wrap" Visibility="Visible" PlaceholderText="Enter values here"/>
+            <StackPanel x:Name="FilePickerPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="FilePickerButton" Content="Pick file"/>
+                <TextBlock x:Name="FilePickerStatus" Text="File wasn't selected" TextWrapping="Wrap"/>
+            </StackPanel>
             <Button x:Name="CreateSetBtn" Content="Create set" HorizontalAlignment="Center" Click="createSetBtn_Click"/>
         </StackPanel>
     </Grid>
