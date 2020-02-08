@@ -39,7 +39,8 @@ namespace Sets
 
         private void ReadSetContent(Set set)
         {
-            Console.Write("Enter set contents (either a sequence of numbers or valid path to file): ");
+            Console.Write("Enter set contents (either a sequence of numbers separated by whitespace," +
+            " or a valid path to file in quotes): ");
 
             var input = Console.ReadLine().Trim();
             if (Regex.IsMatch(input, "^['\"].+['\"]$"))
