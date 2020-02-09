@@ -9,6 +9,50 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.ColumnSpan="2" Grid.RowSpan="2">
+            <Slider x:Name="SetMaxSlider" Minimum="1" Maximum="1000" Value="1"/>
+            <TextBox x:Name="SetOneBox" Text="" TextWrapping="Wrap" PlaceholderText="Enter values of set 1"/>
+            <TextBox x:Name="SetTwoBox" Text="" TextWrapping="Wrap" PlaceholderText="Enter values of set 2"/>
+            <Button x:Name="UpdateButton" Content="Update" Click="UpdateButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout x:Name="ButtonFlyout">
+                        <TextBlock x:Name="FlyoutText" Text="TextBlock" TextWrapping="Wrap"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </Button>
+            <Grid Height="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Set type" TextWrapping="Wrap" Grid.RowSpan="1"/>
+                <TextBlock Text="Union" TextWrapping="Wrap" Grid.Column="1"/>
+                <TextBlock Text="Intersection" TextWrapping="Wrap" Grid.Column="2"/>
+                <TextBlock Text="Logical" TextWrapping="Wrap" Grid.Row="1"/>
+                <TextBlock x:Name="LogicalUnion" Text="-" TextWrapping="Wrap" Grid.Row="1" Grid.Column="1"/>
+                <TextBlock x:Name="LogicalIntersection" Text="-" TextWrapping="Wrap" Grid.Row="1" Grid.Column="2"/>
+                <TextBlock Text="Bit" TextWrapping="Wrap" Grid.Row="2"/>
+                <TextBlock x:Name="BitUnion" Text="-" TextWrapping="Wrap" Grid.Row="2" Grid.Column="1"/>
+                <TextBlock x:Name="BitIntersection" Text="-" TextWrapping="Wrap" Grid.Row="2" Grid.Column="2"/>
+                <TextBlock Text="Multiset" TextWrapping="Wrap" Grid.Row="3" Grid.RowSpan="2"/>
+                <TextBlock x:Name="MultisetUnion" Text="-" TextWrapping="Wrap" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2"/>
+                <TextBlock x:Name="MultisetIntersection" Text="-" TextWrapping="Wrap" Grid.Row="3" Grid.Column="2" Grid.RowSpan="2" Margin="0,0,0,2"/>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Page>
