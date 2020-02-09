@@ -22,6 +22,7 @@ namespace Sets.UWP
 
         private void FillSourceCb()
         {
+            // ReSharper disable once PossibleNullReferenceException
             SourceCb.Items.Add(new ReadingMethod("From file", ReadFromFile, OnReadFromFileSelected));
             SourceCb.Items.Add(new ReadingMethod("From box", ReadFromBox, OnReadFromConsoleBox));
             SourceCb.SelectedIndex = 0;
@@ -29,6 +30,7 @@ namespace Sets.UWP
 
         private void FillRepresentationCb()
         {
+            // ReSharper disable once PossibleNullReferenceException
             RepresentationCb.Items.Add(new CreationMethod("Logical", CreateLogicalSet));
             RepresentationCb.Items.Add(new CreationMethod("Bit", CreateBitSet));
             RepresentationCb.Items.Add(new CreationMethod("Multiset", CreateMultiSet));
@@ -43,15 +45,25 @@ namespace Sets.UWP
 
         private void createSetBtn_Click(object sender, RoutedEventArgs e)
         {
-            var max = (int) MaxElemSlider.Value;
-            var setCreator = (CreationMethod) RepresentationCb.SelectedItem;
-            var method = (ReadingMethod) SourceCb.SelectedItem;
+            try
+            {
+                var max = (int) MaxElemSlider.Value;
+                var setCreator = (CreationMethod) RepresentationCb.SelectedItem;
+                var method = (ReadingMethod) SourceCb.SelectedItem;
 
-            var set = setCreator.Execute(max);
-            method.Execute(set);
+                // ReSharper disable once PossibleNullReferenceException
+                var set = setCreator.Execute(max);
+                // ReSharper disable once PossibleNullReferenceException
+                method.Execute(set);
 
-            // TODO: Open actions page in App's frame
-            Frame.Navigate(typeof(TestOneActionsPage), set);
+                // TODO: Open actions page in the app frame
+                Frame.Navigate(typeof(TestOneActionsPage), set);
+            }
+            catch (Exception exception)
+            {
+                FlyoutText.Text = exception.Message;
+                ButtonFlyout.ShowAt(CreateSetBtn);
+            }
         }
 
         private static SimpleSet CreateLogicalSet(int max) => new SimpleSet(max);
@@ -78,17 +90,22 @@ namespace Sets.UWP
             {
                 set.Append(SetContentTb.Text);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // TODO: Handle exception
+                throw new InvalidDataException("Incorrect values in input box");
             }
         }
 
         private void ReadFromFile(Set set)
         {
-            // TODO: Handle file not selected
-            using (var reader = new StreamReader(_selectedFile))
+            if (_selectedFile == null)
             {
+                throw new InvalidOperationException("Select file before proceeding");
+            }
+
+            try
+            {
+                using var reader = new StreamReader(_selectedFile);
                 var content = reader.ReadToEnd();
                 var numbers = content.Trim()
                     .Split(' ', '\t', '\n', '\r')
@@ -96,11 +113,18 @@ namespace Sets.UWP
                     .Select(int.Parse);
                 set.Append(numbers.ToArray());
             }
+            catch (Exception)
+            {
+                throw new InvalidDataException("Can't parse content of the file. " +
+                                               "Make sure that the file exists and contains " +
+                                               "only numbers separated by whitespaces");
+            }
         }
 
         private void SourceCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var method = (ReadingMethod) SourceCb.SelectedItem;
+            // ReSharper disable once PossibleNullReferenceException
             method.OnSelected();
         }
 

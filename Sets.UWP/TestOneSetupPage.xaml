@@ -35,6 +35,12 @@
             <Button x:Name="FilePickerButton" Content="Pick file" Click="FilePickerButton_OnClick" HorizontalAlignment="Center"/>
             <TextBlock x:Name="FilePickerStatus" Text="File wasn't selected" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16,0,0,0"/>
         </StackPanel>
-        <Button x:Name="CreateSetBtn" Content="Create set" Click="createSetBtn_Click" Grid.Column="1" Grid.Row="5" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="8,8,8,8"/>
+        <Button x:Name="CreateSetBtn" Content="Create set" Click="createSetBtn_Click" Grid.Column="1" Grid.Row="5" VerticalAlignment="Top" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="8,8,8,8">
+            <FlyoutBase.AttachedFlyout>
+                <Flyout x:Name="ButtonFlyout">
+                    <TextBlock x:Name="FlyoutText" Text="TextBlock" TextWrapping="Wrap"/>
+                </Flyout>
+            </FlyoutBase.AttachedFlyout>
+        </Button>
     </Grid>
 </Page>
