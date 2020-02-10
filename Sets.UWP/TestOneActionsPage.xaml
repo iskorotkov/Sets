@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -44,7 +44,7 @@
             </Button>
             <Button x:Name="ContainsButton" Content="Contains" Margin="8,0,0,0" Click="ContainsButton_Click">
                 <Button.Flyout>
-                    <Flyout x:Name="ContainsFlyout" LightDismissOverlayMode="On" ShowMode="Transient">
+                    <Flyout x:Name="ContainsFlyout">
                         <TextBlock x:Name="ContainsFlyoutBlock" Text="TextBlock" TextWrapping="Wrap"/>
                     </Flyout>
                 </Button.Flyout>

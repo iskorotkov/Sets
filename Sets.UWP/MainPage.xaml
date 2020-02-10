@@ -5,8 +5,8 @@
     xmlns:local="using:Sets.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-    <SplitView x:Name="MainSv" DisplayMode="Inline" IsPaneOpen="True" OpenPaneLength="320">
+    mc:Ignorable="d" Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+    <SplitView x:Name="MainSv" DisplayMode="Inline" IsPaneOpen="True" OpenPaneLength="320" Background="{ThemeResource SystemControlAcrylicElementBrush}" PaneBackground="{x:Null}">
         <SplitView.Pane>
             <Grid>
                 <ListView x:Name="MainLv" IsItemClickEnabled="True"  SelectionChanged="MainLv_SelectionChanged">
