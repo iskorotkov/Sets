@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -38,20 +39,49 @@ namespace Sets.UWP
 
         private void AddButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            _set.Add(GetProcessedNumber());
-            Refresh();
+            try
+            {
+                _set.Add(GetProcessedNumber());
+                Refresh();
+            }
+            catch (OutOfSetRangeException exception)
+            {
+                AddFlyoutText.Text = exception.Message;
+                AddButtonFlyout.ShowAt(AddButton);
+            }
+            catch (Exception)
+            {
+                AddFlyoutText.Text = "Incorrect format";
+                AddButtonFlyout.ShowAt(AddButton);
+            }
         }
 
         private void RemoveButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            _set.Remove(GetProcessedNumber());
-            Refresh();
+            try
+            {
+                _set.Remove(GetProcessedNumber());
+                Refresh();
+            }
+            catch (Exception)
+            {
+                RemoveFlyoutText.Text = "Incorrect format";
+                RemoveButtonFlyout.ShowAt(RemoveButton);
+            }
         }
 
         private void ContainsButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            var number = GetProcessedNumber();
-            ContainsFlyoutBlock.Text = _set.Contains(number) ? $"Set contains {number}" : $"Set does not contain {number}";
+            try
+            {
+                var number = GetProcessedNumber();
+                ContainsFlyoutBlock.Text =
+                    _set.Contains(number) ? $"Set contains {number}" : $"Set does not contain {number}";
+            }
+            catch (Exception)
+            {
+                ContainsFlyoutBlock.Text = "Incorrect format";
+            }
         }
     }
 }

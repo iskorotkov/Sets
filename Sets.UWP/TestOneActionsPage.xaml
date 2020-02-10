@@ -27,8 +27,21 @@
         <TextBlock x:Name="SetOutputBlock" Text="Set: ---" TextWrapping="Wrap" Grid.Row="1" FontSize="32" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,8,8,8"/>
         <TextBox x:Name="ValueBox" Text="" TextWrapping="Wrap" Grid.Row="2" PlaceholderText="Enter value here" Grid.ColumnSpan="2" Grid.Column="1" Margin="8,8,8,8"/>
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" Margin="8,8,8,8">
-            <Button x:Name="AddButton" Content="Add" Click="AddButton_Click"/>
-            <Button x:Name="RemoveButton" Content="Remove" Margin="8,0,0,0" Click="RemoveButton_Click"/>
+            <Button x:Name="AddButton" Content="Add" Click="AddButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout x:Name="AddButtonFlyout">
+                        <TextBlock x:Name="AddFlyoutText" Text="TextBlock" TextWrapping="Wrap"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+
+            </Button>
+            <Button x:Name="RemoveButton" Content="Remove" Margin="8,0,0,0" Click="RemoveButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout x:Name="RemoveButtonFlyout">
+                        <TextBlock x:Name="RemoveFlyoutText" Text="TextBlock" TextWrapping="Wrap"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </Button>
             <Button x:Name="ContainsButton" Content="Contains" Margin="8,0,0,0" Click="ContainsButton_Click">
                 <Button.Flyout>
                     <Flyout x:Name="ContainsFlyout" LightDismissOverlayMode="On" ShowMode="Transient">
