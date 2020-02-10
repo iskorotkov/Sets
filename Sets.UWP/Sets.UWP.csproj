@@ -180,16 +180,16 @@
     <Folder Include="Design\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Sets.Lib\Sets.Lib.csproj">
+    <ProjectReference Include="..\Sets\Sets.csproj">
       <Project>{b70c91f1-9340-4e21-8051-f7d4ab1a6ba4}</Project>
-      <Name>Sets.Lib</Name>
+      <Name>Sets</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
