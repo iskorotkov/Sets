@@ -1,0 +1,54 @@
+﻿<Page
+    x:Class="Sets.UWP.TestOneActionsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Sets.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+
+        </Grid.RowDefinitions>
+
+        <Button x:Name="BackButton" Style="{StaticResource NavigationBackButtonNormalStyle}" VerticalAlignment="Top" Click="BackButton_Click"/>
+        <TextBlock x:Name="SetOutputBlock" Text="Set: ---" TextWrapping="Wrap" Grid.Row="1" FontSize="32" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,8,8,8"/>
+        <TextBox x:Name="ValueBox" Text="" TextWrapping="Wrap" Grid.Row="2" PlaceholderText="Enter value here" Grid.ColumnSpan="2" Grid.Column="1" Margin="8,8,8,8"/>
+        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" Margin="8,8,8,8">
+            <Button x:Name="AddButton" Content="Add" Click="AddButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout x:Name="AddButtonFlyout">
+                        <TextBlock x:Name="AddFlyoutText" Text="TextBlock" TextWrapping="Wrap"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+
+            </Button>
+            <Button x:Name="RemoveButton" Content="Remove" Margin="8,0,0,0" Click="RemoveButton_Click">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout x:Name="RemoveButtonFlyout">
+                        <TextBlock x:Name="RemoveFlyoutText" Text="TextBlock" TextWrapping="Wrap"/>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </Button>
+            <Button x:Name="ContainsButton" Content="Contains" Margin="8,0,0,0" Click="ContainsButton_Click">
+                <Button.Flyout>
+                    <Flyout x:Name="ContainsFlyout">
+                        <TextBlock x:Name="ContainsFlyoutBlock" Text="TextBlock" TextWrapping="Wrap"/>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Page>
