@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System;
+using Windows.UI.Xaml.Controls;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -17,9 +18,17 @@ namespace Sets.UWP
         private void UpdateButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             var max = (int) SetMaxSlider.Value;
-            ShowResultsForSets(new SimpleSet(max), new SimpleSet(max), LogicalUnion, LogicalIntersection);
-            ShowResultsForSets(new BitSet(max), new BitSet(max), BitUnion, BitIntersection);
-            ShowResultsForSets(new MultiSet(max), new MultiSet(max), MultisetUnion, MultisetIntersection);
+            try
+            {
+                ShowResultsForSets(new SimpleSet(max), new SimpleSet(max), LogicalUnion, LogicalIntersection);
+                ShowResultsForSets(new BitSet(max), new BitSet(max), BitUnion, BitIntersection);
+                ShowResultsForSets(new MultiSet(max), new MultiSet(max), MultisetUnion, MultisetIntersection);
+            }
+            catch (Exception)
+            {
+                FlyoutText.Text = "Incorrect format";
+                ButtonFlyout.ShowAt(UpdateButton);
+            }
         }
 
         private void ShowResultsForSets(Set set1, Set set2, TextBlock unionTb, TextBlock intersectionTb)
