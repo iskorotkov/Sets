@@ -53,7 +53,7 @@ namespace Sets
             var result = new MultiSet(length);
             for (var i = 0; i < length; i++)
             {
-                result._arr[i] = Math.Max(lhs._arr[i], rhs._arr[i]);
+                result._arr[i] = Math.Min(lhs._arr[i], rhs._arr[i]);
             }
 
             return result;
